@@ -29,8 +29,19 @@ async def on_message(message):
         return
     if str(message.author.id) not in AUTHORIZED_USER_IDS:
         return
-    if message.content == "hello":
-        await message.channel.send("Hey!")
+
+    # Greetings
+    greetings = ["hello", "hi", "hey"]
+    if message.content.lower() in greetings:
+        await message.channel.send("WOOF! Hi there!")
+
+    # Bot's Status
+    elif message.content.lower() == "how are you?":
+        await message.channel.send("I'm just a cute doggo bot, but I'm functioning optimally!")
+
+    # Bot's Purpose
+    elif message.content.lower() == "what can you do?":
+        await message.channel.send("I'm still learning, but I can greet you and answer some basic questions!")
 
 # Run the bot
 bot.run(DISCORD_TOKEN)
