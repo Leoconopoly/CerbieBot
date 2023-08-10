@@ -11,6 +11,7 @@ intents.guilds = True
 # assuming the tokens.env file has the format DISCORD_TOKEN=<your_token>
 load_dotenv("C:/Users/leoco/Documents/CerbieBot/tokens.env")
 DISCORD_TOKEN = os.getenv("DISCORD_TOKEN")
+AUTHORIZED_USER_IDS = os.getenv('AUTHORIZED_USER_IDS').split(',')
 
 # Initialize the bot with the specified intents
 bot = discord.Client(intents=intents)
@@ -25,6 +26,8 @@ async def on_ready():
 async def on_message(message):
     """Event listener for when a new message is sent to a channel."""
     if message.author == bot.user:
+        return
+    if str(message.author.id) not in AUTHORIZED_USER_IDS:
         return
     if message.content == "hello":
         await message.channel.send("Hey!")
