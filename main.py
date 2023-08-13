@@ -2,6 +2,7 @@ import discord
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
+from database import add_reminder, get_reminders, add_task, get_tasks
 
 # Define the intents of the bot
 intents = discord.Intents.default()
