@@ -4,7 +4,7 @@ from firebase_admin import credentials, firestore
 from dotenv import load_dotenv
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate('C:\Users\leoco\Documents\CerbieBot\cerbiebot-firebase-adminsdk-5afo3-2d5b25d8d2.json')
+cred = credentials.Certificate("C:\\Users\\leoco\\Documents\\CerbieBot\\cerbiebot-firebase-adminsdk-5afo3-2d5b25d8d2.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
