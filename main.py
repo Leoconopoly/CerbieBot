@@ -38,7 +38,7 @@ async def on_message(message):
     # Check if the bot was mentioned
     if bot.user.mentioned_in(message):
         # Respond to the mention
-        await message.channel.send("You mentioned me!")
+        await message.channel.send("Woof! How can I help you today? Type !help for a list of commands")
 
         # Strip the mention from the message content
         content_without_mention = message.content.replace(f"<@!{bot.user.id}>", "").replace(f"<@{bot.user.id}>", "").strip()
