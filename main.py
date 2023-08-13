@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from discord.ext import commands
 from database import add_reminder, get_reminders, add_task, get_tasks
+from utils import convert_to_timestamp
 
 # Define the intents of the bot
 intents = discord.Intents.default()
@@ -63,6 +64,36 @@ async def on_message(message):
 
     # Allow the bot to process commands
     await bot.process_commands(message)
+
+@bot.command()
+async def remindme(ctx, time: str, *, reminder_content: str):
+    # Convert time to a timestamp (you'll need a function for this)
+    timestamp = convert_to_timestamp(time)  # You'll need to define this function
+    
+    # Add to Firestore
+    add_reminder(str(ctx.author.id), reminder_content, timestamp)
+    
+    await ctx.send(f"Reminder set for {time}!")
+
+@bot.command()
+async def viewreminders(ctx):
+    reminders = get_reminders(str(ctx.author.id))
+    for reminder in reminders:
+        reminder_data = reminder.to_dict()
+        await ctx.send(f"Reminder: {reminder_data['reminder_content']} at {reminder_data['timestamp']}")
+
+@bot.command()
+async def addtask(ctx, *, task_content: str):
+    add_task(str(ctx.author.id), task_content)
+    await ctx.send(f"Task '{task_content}' added!")
+
+@bot.command()
+async def viewtasks(ctx):
+    tasks = get_tasks(str(ctx.author.id))
+    for task in tasks:
+        task_data = task.to_dict()
+        status = "Completed" if task_data['is_completed'] else "Pending"
+        await ctx.send(f"Task: {task_data['task_content']} - Status: {status}")
 
 # Run the bot
 bot.run(DISCORD_TOKEN)
