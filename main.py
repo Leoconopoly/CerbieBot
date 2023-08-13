@@ -81,5 +81,9 @@ async def viewtasks(ctx):
         status = "Completed" if task_data['is_completed'] else "Pending"
         await ctx.send(f"Task: {task_data['task_content']} - Status: {status}")
 
+@bot.event
+async def on_command_error(ctx, error):
+    print(f"Command error: {error}")
+
 # Run the bot
 bot.run(DISCORD_TOKEN)
