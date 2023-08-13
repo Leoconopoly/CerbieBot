@@ -20,12 +20,14 @@ def get_reminders(user_id):
     return db.collection('reminders').where('user_id', '==', user_id).stream()
 
 def add_task(user_id, task_content):
+    print("add_task function called")  # Debug print
     tasks = db.collection('tasks')
     tasks.add({
         'user_id': user_id,
         'task_content': task_content,
         'is_completed': False
     })
+    print("Task added to Firestore collection")  # Debug print
 
 def get_tasks(user_id):
     return db.collection('tasks').where('user_id', '==', user_id).stream()

@@ -27,16 +27,11 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     """Event listener for when a new message is sent to a channel."""
-    # Allow the bot to process commands first
-    await bot.process_commands(message)
-
     if message.author == bot.user:
         return
-    if str(message.author.id) not in AUTHORIZED_USER_IDS:
-        return
 
-    # Check if the bot was mentioned
-    if bot.user.mentioned_in(message):
+    # Check if the bot was mentioned and not a command
+    if bot.user.mentioned_in(message) and not message.content.startswith('!'):
         # Respond to the mention
         await message.channel.send("Woof! How can I help you today? Type !help for a list of commands")
 
@@ -52,6 +47,10 @@ async def on_message(message):
             await message.channel.send("I'm just a cute doggo bot, but I'm functioning optimally!")
         elif content_without_mention.lower() == "what can you do?":
             await message.channel.send("I'm still learning, but I can greet you and answer some basic questions!")
+
+    # Allow the bot to process commands
+    await bot.process_commands(message)
+
 
 @bot.command()
 async def remindme(ctx, time: str, *, reminder_content: str):
@@ -70,7 +69,9 @@ async def viewreminders(ctx):
 
 @bot.command()
 async def addtask(ctx, *, task_content: str):
+    print("addtask command invoked")  # Debug print
     add_task(str(ctx.author.id), task_content)
+    print("Task should be added to Firestore")  # Debug print
     await ctx.send(f"Task '{task_content}' added!")
 
 @bot.command()
@@ -84,6 +85,10 @@ async def viewtasks(ctx):
 @bot.event
 async def on_command_error(ctx, error):
     print(f"Command error: {error}")
+
+@bot.command()
+async def test(ctx):
+    await ctx.send("Test command invoked!")
 
 # Run the bot
 bot.run(DISCORD_TOKEN)
